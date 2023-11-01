@@ -16,32 +16,26 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Install rsync
-        run: sudo apt-get update && sudo apt-get install -y rsync
-
-      - name: Which rsync
-        run: which rsync
-
-      - name: Verify rsync installation
-        run: rsync --version
-
       - name: Install dependencies
         run: npm i
 
       - name: Build the website
         run: npm run build
 
-      - name: List dist contents
-        run: ls -alh dist/
 
       - name: Scan the host key
         run: mkdir -p ~/.ssh/ && ssh-keyscan -H $DEPLOY_SERVER >> ~/.ssh/known_hosts
         env:
           DEPLOY_SERVER: ${{ secrets.DEPLOY_SERVER }}
 
-      - name: Deploy the website
-        run: >-
-          /usr/bin/rsync -avx --delete --exclude '.ssh' dist/ $DEPLOY_USERNAME@$DEPLOY_SERVER:./
+      - name: Clean remote directory
+        run: ssh $DEPLOY_USERNAME@$DEPLOY_SERVER 'rm -rf ./*'
+        env:
+          DEPLOY_SERVER: ${{ secrets.DEPLOY_SERVER }}
+          DEPLOY_USERNAME: ${{ secrets.DEPLOY_USERNAME }}
+
+      - name: C
+        run: scp -r -o StrictHostKeyChecking=no dist/ $DEPLOY_USERNAME@$DEPLOY_SERVER:./
         env:
           DEPLOY_SERVER: ${{ secrets.DEPLOY_SERVER }}
           DEPLOY_USERNAME: ${{ secrets.DEPLOY_USERNAME }}
