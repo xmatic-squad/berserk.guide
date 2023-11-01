@@ -22,14 +22,14 @@ jobs:
       - name: Verify rsync installation
         run: rsync --version
 
-      - name: List dist contents
-        run: ls -alh dist/
-
       - name: Install dependencies
         run: npm i
 
       - name: Build the website
         run: npm run build
+
+      - name: List dist contents
+        run: ls -alh dist/
 
       - name: Scan the host key
         run: mkdir -p ~/.ssh/ && ssh-keyscan -H $DEPLOY_SERVER >> ~/.ssh/known_hosts
