@@ -19,6 +19,11 @@ jobs:
       - name: Install rsync
         run: sudo apt-get update && sudo apt-get install -y rsync
 
+      - name: Verify rsync installation
+        run: rsync --version
+
+      - name: List dist contents
+        run: ls -alh dist/
 
       - name: Install dependencies
         run: npm i
