@@ -34,7 +34,7 @@ jobs:
           DEPLOY_SERVER: ${{ secrets.DEPLOY_SERVER }}
           DEPLOY_USERNAME: ${{ secrets.DEPLOY_USERNAME }}
 
-      - name: C
+      - name: Deploy the website with SCP
         run: scp -r -o StrictHostKeyChecking=no dist/ $DEPLOY_USERNAME@$DEPLOY_SERVER:./
         env:
           DEPLOY_SERVER: ${{ secrets.DEPLOY_SERVER }}
